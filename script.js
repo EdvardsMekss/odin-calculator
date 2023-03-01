@@ -24,20 +24,29 @@ function clear(){
 }
 
 function eval(firstNum, currentOperand){
-    secondNum = evalSecondNum();
-    console.log(firstNum)
-    console.log(secondNum)
     if(currentOperand === 'plus'){
+        secondNum = evalSecondNum();
         return tempSum = parseFloat(firstNum) + parseFloat(secondNum);
     } 
     else if(currentOperand === 'minus'){
+        secondNum = evalSecondNum();
         return tempSum = parseFloat(firstNum) - parseFloat(secondNum);
     }
     else if(currentOperand === 'multiply'){
+        secondNum = evalSecondNum();
         return tempSum = parseFloat(firstNum) * parseFloat(secondNum);
     }
     else if(currentOperand === 'divide'){
+        secondNum = evalSecondNum();
         return tempSum = parseFloat(firstNum) / parseFloat(secondNum);
+    }
+    else if(currentOperand === 'pow'){
+        tempSum = Math.pow(firstNum, 2);
+        screenText.innerText = tempSum;
+    }
+    else if(currentOperand === 'sqrt'){
+        tempSum = Math.sqrt(parseFloat(firstNum));
+        screenText.innerText = tempSum;
     }
 }
 
@@ -71,6 +80,23 @@ clearButton.addEventListener('click', ()=>{
     clear();
 })
 
+// Add event listener to pow^2 button
+let powButton = document.getElementById("pow");
+powButton.addEventListener('click', ()=>{
+    firstNum = screenText.innerText.toString();
+    currentOperand = 'pow'
+    eval(firstNum, currentOperand);
+})
+
+// Add event listener to sqrt button
+let sqrtButton = document.getElementById("sqrt");
+sqrtButton.addEventListener('click', ()=>{
+    firstNum = screenText.innerText.toString();
+    currentOperand = 'sqrt'
+    eval(firstNum, currentOperand);
+})
+
+// Add event listener to equals button
 let evalButton = document.getElementById("equals");
 evalButton.addEventListener('click', ()=>{
     let sum = eval(firstNum, currentOperand);
