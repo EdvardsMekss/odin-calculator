@@ -17,7 +17,10 @@ function clear(){
     if(screenText.innerText.length !== 0){
         screenText.innerText = "";
     }
-    
+    firstNum = '';
+    currentOperand = '';
+    secondNum = '';
+    tempSum ='';
 }
 
 function eval(firstNum, currentOperand){
@@ -26,6 +29,15 @@ function eval(firstNum, currentOperand){
     console.log(secondNum)
     if(currentOperand === 'plus'){
         return tempSum = parseFloat(firstNum) + parseFloat(secondNum);
+    } 
+    else if(currentOperand === 'minus'){
+        return tempSum = parseFloat(firstNum) - parseFloat(secondNum);
+    }
+    else if(currentOperand === 'multiply'){
+        return tempSum = parseFloat(firstNum) * parseFloat(secondNum);
+    }
+    else if(currentOperand === 'divide'){
+        return tempSum = parseFloat(firstNum) / parseFloat(secondNum);
     }
 }
 
@@ -43,9 +55,9 @@ function readFirstNum(){
 
 let screenText = document.getElementById("screen-text");
 let firstNum = '';
-let currentOperand;
-let secondNum;
-let tempSum;
+let currentOperand = '';
+let secondNum = '';
+let tempSum ='';
 
 // Add event listener to backspace button
 let backspaceButton = document.getElementById("backspace");
@@ -82,8 +94,8 @@ for(let operand of operands){
         if(firstNum === ''){
             readFirstNum();
         } else {
-            eval(firstNum, currentOperand);
             firstNum = tempSum;
+            eval(firstNum, currentOperand);
         }
             
     })
