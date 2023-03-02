@@ -12,61 +12,42 @@ function backspace(){
     }
 }
 
-// Clears entire screen
+// Clears entire screen and resets all variables
 function clear(){
-    if(screenText.innerText.length !== 0){
-        screenText.innerText = "";
-    }
-    firstNum = '';
-    currentOperand = '';
-    secondNum = '';
-    tempSum ='';
+    screenText.innerText = "";
+    firstNum = null;
+    currentOperand = null;
+    secondNum = null;
+    tempSum = null;
+    operandsUsed = 0;
+    currNumb = 1;
+    numbPressed = 0;
 }
 
-function eval(firstNum, currentOperand){
+function eval(firstNum, currentOperand, secondNum){
     if(currentOperand === 'plus'){
-        secondNum = evalSecondNum();
         return tempSum = parseFloat(firstNum) + parseFloat(secondNum);
     } 
     else if(currentOperand === 'minus'){
-        secondNum = evalSecondNum();
         return tempSum = parseFloat(firstNum) - parseFloat(secondNum);
     }
     else if(currentOperand === 'multiply'){
-        secondNum = evalSecondNum();
         return tempSum = parseFloat(firstNum) * parseFloat(secondNum);
     }
     else if(currentOperand === 'divide'){
-        secondNum = evalSecondNum();
         return tempSum = parseFloat(firstNum) / parseFloat(secondNum);
     }
-    else if(currentOperand === 'pow'){
-        tempSum = Math.pow(firstNum, 2);
-        screenText.innerText = tempSum;
-    }
-    else if(currentOperand === 'sqrt'){
-        tempSum = Math.sqrt(parseFloat(firstNum));
-        screenText.innerText = tempSum;
-    }
 }
 
-function evalSecondNum(){
-    let currNum = screenText.innerText.toString();
-    const regex = /-?\s*\d+$/; // matches an optional negative sign, optional whitespace, and one or more digits at the end of the string
-    const match = currNum.match(regex); // search for the last occurrence of the pattern in the string
-    return match ? match[0].trim() : null; // return the matched number without leading/trailing whitespace or null if there's no match
-}
-
-function readFirstNum(){
-    let currentNumber = screenText.innerText.toString();
-    firstNum = currentNumber.slice(0, -1);
-}
 
 let screenText = document.getElementById("screen-text");
-let firstNum = '';
-let currentOperand = '';
-let secondNum = '';
-let tempSum ='';
+let firstNum;
+let currentOperand;
+let secondNum;
+let tempSum;
+let operandsUsed = 0;
+let currNumb = 1;
+let numbPressed = 0;
 
 // Add event listener to backspace button
 let backspaceButton = document.getElementById("backspace");
@@ -83,31 +64,44 @@ clearButton.addEventListener('click', ()=>{
 // Add event listener to pow^2 button
 let powButton = document.getElementById("pow");
 powButton.addEventListener('click', ()=>{
-    firstNum = screenText.innerText.toString();
-    currentOperand = 'pow'
-    eval(firstNum, currentOperand);
+    if(currNumb === 1){
+        firstNum = Math.pow(fparseFloat(firstNum), 2);
+        screenText.innerText = firstNum;
+    }
+    else {
+        tempSum = eval(firstNum, currentOperand, secondNum);
+        tempSum = Math.pow(parseFloat(tempSum), 2);
+        screenText.innerText = tempSum;
+    }
 })
 
 // Add event listener to sqrt button
 let sqrtButton = document.getElementById("sqrt");
 sqrtButton.addEventListener('click', ()=>{
-    firstNum = screenText.innerText.toString();
-    currentOperand = 'sqrt'
-    eval(firstNum, currentOperand);
+    if(currNumb === 1){
+        firstNum = Math.sqrt(parseFloat(firstNum));
+        screenText.innerText = firstNum;
+    }
+    else {
+        tempSum = eval(firstNum, currentOperand, secondNum);
+        tempSum = Math.sqrt(parseFloat(tempSum));
+        screenText.innerText = tempSum;
+    }
+
 })
 
 // Add event listener to equals button
 let evalButton = document.getElementById("equals");
 evalButton.addEventListener('click', ()=>{
-    let sum = eval(firstNum, currentOperand);
-    screenText.innerText = sum;
+    tempSum = eval(firstNum, currentOperand, secondNum);
+    screenText.innerText = tempSum;
 })
 
 // Add event listeners to all buttons which should be written to screen
-let numbers = document.getElementsByClassName("numb");
-for(let number of numbers){
-    number.addEventListener('click', ()=>{
-        let value = number.innerText;
+let toScreen = document.getElementsByClassName("screen");
+for(let elem of toScreen){
+    elem.addEventListener('click', ()=>{
+        let value = elem.innerText;
         writeToScreen(value);
     })
 }
@@ -116,13 +110,47 @@ for(let number of numbers){
 let operands = document.getElementsByClassName("operand");
 for(let operand of operands){
     operand.addEventListener('click', ()=>{
-        currentOperand = operand.id;
-        if(firstNum === ''){
-            readFirstNum();
-        } else {
-            firstNum = tempSum;
-            eval(firstNum, currentOperand);
+        if(currNumb === 1){
+            currNumb = 2;
+            numbPressed = 0;
+            currentOperand = operand.id;
+            console.log("Curr oper: " + currentOperand);
         }
-            
+        else if(currNumb === 2){
+            numbPressed = 0;
+            console.log("Curr oper when pres again: " + currentOperand);
+            tempSum = eval(firstNum, currentOperand, secondNum);
+            firstNum = tempSum;
+            console.log("Temp sum " + tempSum);
+            currentOperand = operand.id;
+            console.log("Curr oper: " + currentOperand);
+        }
+    })
+}
+
+// Add event listeners to all numbers
+let numbers = document.getElementsByClassName("numb");
+for(let number of numbers){
+    number.addEventListener('click', ()=>{
+        if(currNumb === 1 && numbPressed === 0){
+            numbPressed++;
+            let f2 = number.innerText;
+            firstNum = f2;
+            console.log("First num: " + firstNum);
+        }
+        else if(currNumb === 1 && numbPressed > 0){
+            firstNum += number.innerText;
+            console.log("First num: " + firstNum);
+        }
+        else if(currNumb === 2 && numbPressed === 0){
+            numbPressed++;
+            let f3 = number.innerText;
+            secondNum = f3;
+            console.log("Second num: " + secondNum);
+        }
+        else if(currNumb === 2 && numbPressed > 0){
+            secondNum += number.innerText;
+            console.log("Second num: " + secondNum);
+        }
     })
 }
