@@ -12,18 +12,6 @@ function backspace(){
     }
 }
 
-// Clears entire screen and resets all variables
-function clear(){
-    screenText.innerText = "";
-    firstNum = null;
-    currentOperand = null;
-    secondNum = null;
-    tempSum = null;
-    operandsUsed = 0;
-    currNumb = 1;
-    numbPressed = 0;
-}
-
 function eval(firstNum, currentOperand, secondNum){
     if(currentOperand === 'plus'){
         return tempSum = parseFloat(firstNum) + parseFloat(secondNum);
@@ -36,6 +24,9 @@ function eval(firstNum, currentOperand, secondNum){
     }
     else if(currentOperand === 'divide'){
         return tempSum = parseFloat(firstNum) / parseFloat(secondNum);
+    }
+    else if(currentOperand === 'pow'){
+        return tempSum = Math.pow(parseFloat(firstNum), parseFloat(secondNum));
     }
 }
 
@@ -58,35 +49,21 @@ backspaceButton.addEventListener('click', ()=>{
 // Add event listener to clear button
 let clearButton = document.getElementById("clear");
 clearButton.addEventListener('click', ()=>{
-    clear();
+    screenText.innerText = "";
+    firstNum = null;
+    currentOperand = null;
+    secondNum = null;
+    tempSum = null;
+    operandsUsed = 0;
+    currNumb = 1;
+    numbPressed = 0;
 })
 
-// Add event listener to pow^2 button
-let powButton = document.getElementById("pow");
-powButton.addEventListener('click', ()=>{
-    if(currNumb === 1){
-        firstNum = Math.pow(fparseFloat(firstNum), 2);
-        screenText.innerText = firstNum;
-    }
-    else {
-        tempSum = eval(firstNum, currentOperand, secondNum);
-        tempSum = Math.pow(parseFloat(tempSum), 2);
-        screenText.innerText = tempSum;
-    }
-})
 
 // Add event listener to sqrt button
 let sqrtButton = document.getElementById("sqrt");
 sqrtButton.addEventListener('click', ()=>{
-    if(currNumb === 1){
-        firstNum = Math.sqrt(parseFloat(firstNum));
-        screenText.innerText = firstNum;
-    }
-    else {
-        tempSum = eval(firstNum, currentOperand, secondNum);
-        tempSum = Math.sqrt(parseFloat(tempSum));
-        screenText.innerText = tempSum;
-    }
+    
 
 })
 
@@ -105,6 +82,7 @@ for(let elem of toScreen){
         writeToScreen(value);
     })
 }
+
 
 // Add event listeners to all operands
 let operands = document.getElementsByClassName("operand");
