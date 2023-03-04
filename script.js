@@ -1,8 +1,3 @@
-// Value stores number which was clicked by user and is added on screen
-function writeToScreen(value){
-    screenText.innerText += value;
-}
-
 // Converts innerText to string and removes last element
 function backspace(){
     if(screenText.innerText.length !== 0){
@@ -12,6 +7,7 @@ function backspace(){
     }
 }
 
+// Evaluates result of first and second numb based on operator
 function eval(firstNum, currentOperand, secondNum){
     if(currentOperand === 'plus'){
         return tempSum = parseFloat(firstNum) + parseFloat(secondNum);
@@ -20,15 +16,17 @@ function eval(firstNum, currentOperand, secondNum){
         return tempSum = parseFloat(firstNum) - parseFloat(secondNum);
     }
     else if(currentOperand === 'multiply'){
-        return tempSum = parseFloat(firstNum) * parseFloat(secondNum);
+        return tempSum = parseFloat(firstNum) * parseFloat(secondNum).toFixed(5);;
     }
     else if(currentOperand === 'divide'){
-        return tempSum = parseFloat(firstNum) / parseFloat(secondNum);
+        return tempSum = parseFloat(firstNum) / parseFloat(secondNum).toFixed(5);;
     }
     else if(currentOperand === 'pow'){
-        return tempSum = Math.pow(parseFloat(firstNum), parseFloat(secondNum));
+        return tempSum = Math.pow(parseFloat(firstNum), parseFloat(secondNum)).toFixed(5);;
     }
 }
+
+
 
 
 let screenText = document.getElementById("screen-text");
@@ -59,14 +57,6 @@ clearButton.addEventListener('click', ()=>{
     numbPressed = 0;
 })
 
-
-// Add event listener to sqrt button
-let sqrtButton = document.getElementById("sqrt");
-sqrtButton.addEventListener('click', ()=>{
-    
-
-})
-
 // Add event listener to equals button
 let evalButton = document.getElementById("equals");
 evalButton.addEventListener('click', ()=>{
@@ -74,21 +64,37 @@ evalButton.addEventListener('click', ()=>{
     screenText.innerText = tempSum;
 })
 
+// Add event listener to sqrt button
+let sqrtButton = document.getElementById("sqrt");
+sqrtButton.addEventListener('click', ()=>{
+    if (currNumb === 1){
+        firstNum = Math.sqrt(firstNum).toFixed(5);
+        screenText.innerText = firstNum;
+    }
+    else if (currNumb === 2){
+        console.log("temp sum before sqrt: " + tempSum)
+        tempSum = Math.sqrt(eval(firstNum, currentOperand, secondNum)).toFixed(5);
+        console.log("temp sum after sqrt: " + tempSum)
+        screenText.innerText = tempSum;
+        currNumb = 1;
+        firstNum = tempSum;
+    }
+})
+
 // Add event listeners to all buttons which should be written to screen
 let toScreen = document.getElementsByClassName("screen");
 for(let elem of toScreen){
     elem.addEventListener('click', ()=>{
         let value = elem.innerText;
-        writeToScreen(value);
+        screenText.innerText += value;
     })
 }
-
 
 // Add event listeners to all operands
 let operands = document.getElementsByClassName("operand");
 for(let operand of operands){
     operand.addEventListener('click', ()=>{
-        if(currNumb === 1){
+        if (currNumb === 1) {
             currNumb = 2;
             numbPressed = 0;
             currentOperand = operand.id;
