@@ -24,6 +24,9 @@ function eval(firstNum, currentOperand, secondNum){
     else if(currentOperand === 'pow'){
         return tempSum = Math.pow(parseFloat(firstNum), parseFloat(secondNum)).toFixed(5);;
     }
+    else if(currentOperand === 'mod'){
+        return tempSum = parseFloat(firstNum) % parseFloat(secondNum);
+    }
 }
 
 
