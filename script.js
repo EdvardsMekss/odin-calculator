@@ -1,9 +1,45 @@
 // Converts innerText to string and removes last element
 function backspace(){
+    let opSimb;
+    if(currentOperand === 'plus'){
+        opSimb = '+';
+    } 
+    else if(currentOperand === 'minus'){
+        opSimb = '-';
+    }
+    else if(currentOperand === 'multiply'){
+        opSimb = '&#215';
+    }
+    else if(currentOperand === 'divide'){
+        opSimb = '&#247';
+    }
+    else if(currentOperand === 'pow'){
+        opSimb = '^';
+    }
+    else if(currentOperand === 'mod'){
+        opSimb = 'mod';
+    }
+
     if(screenText.innerText.length !== 0){
-        let currentNumber = screenText.innerText.toString();
-        let newCurrNumb = currentNumber.slice(0, -1);
-        screenText.innerText = newCurrNumb;
+        if(currNumb === 1){
+            console.log("First num before: " + firstNum)
+            firstNum = firstNum.slice(0, -1);
+            screenText.innerText = firstNum;
+            console.log("First num after: " + firstNum)
+        }
+        else if(currNumb === 2){
+            if(secondNum === '' || secondNum === 0 || secondNum === undefined){
+                currNumb = 1;
+                screenText.innerText = screenText.innerText.slice(0, -1);
+            }
+            else {
+                console.log("Second num before: " + secondNum)
+                secondNum = secondNum.slice(0, -1);
+                screenText.innerText = firstNum + opSimb + secondNum;
+                console.log("Second num after: " + secondNum)
+            }
+        }
+        
     }
 }
 
@@ -101,16 +137,12 @@ for(let operand of operands){
             currNumb = 2;
             numbPressed = 0;
             currentOperand = operand.id;
-            console.log("Curr oper: " + currentOperand);
         }
         else if(currNumb === 2){
             numbPressed = 0;
-            console.log("Curr oper when pres again: " + currentOperand);
             tempSum = eval(firstNum, currentOperand, secondNum);
             firstNum = tempSum;
-            console.log("Temp sum " + tempSum);
             currentOperand = operand.id;
-            console.log("Curr oper: " + currentOperand);
         }
     })
 }
@@ -123,21 +155,17 @@ for(let number of numbers){
             numbPressed++;
             let f2 = number.innerText;
             firstNum = f2;
-            console.log("First num: " + firstNum);
         }
         else if(currNumb === 1 && numbPressed > 0){
             firstNum += number.innerText;
-            console.log("First num: " + firstNum);
         }
         else if(currNumb === 2 && numbPressed === 0){
             numbPressed++;
             let f3 = number.innerText;
             secondNum = f3;
-            console.log("Second num: " + secondNum);
         }
         else if(currNumb === 2 && numbPressed > 0){
             secondNum += number.innerText;
-            console.log("Second num: " + secondNum);
         }
     })
 }
