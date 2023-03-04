@@ -29,8 +29,14 @@ function backspace(){
         }
         else if(currNumb === 2){
             if(secondNum === '' || secondNum === 0 || secondNum === undefined){
+                screenText.innerText = "";
+                firstNum = null;
+                currentOperand = null;
+                secondNum = null;
+                tempSum = null;
+                operandsUsed = 0;
                 currNumb = 1;
-                screenText.innerText = screenText.innerText.slice(0, -1);
+                numbPressed = 0;
             }
             else {
                 console.log("Second num before: " + secondNum)
