@@ -21,3 +21,8 @@
     background-color: rgb(17, 163, 17);
     color: white;
 }
+
+#design {
+    grid-area: 1 / 2/ 2 / 4;
+    visibility: hidden;
+}
